@@ -1,0 +1,48 @@
+From 5583843084fe8ce68e6e0072e2e85d79bbd8edb8 Mon Sep 17 00:00:00 2001
+From: Carlos Soriano <csoriano@gnome.org>
+Date: Wed, 8 Nov 2017 00:27:55 +0100
+Subject: [PATCH] CascadeBG: Fix shortcuts not working after mouse click
+
+The situation is that when a menu is clicked twice to open and close,
+the shorcuts stop working.
+
+This happens because when the mouse click to close the pop menu finishes,
+it starts a drag. When a drag is started, the bit "wasposted" is set to
+prevent the menu from being messed with.
+
+When the user clicks again with the mouse, this bit is unset and all is
+fine.
+
+However, when using the keyboard this was not unset and when trying to
+select the menu it realized it was in a drag and instead of opening it
+was closing it, effectively preventing to use the shortcuts closing the
+menu while trying to opening it.
+
+There are three possibilities:
+1- Don't start a drag when the pop menu is dismissed
+2- Unset the bit before selecting the menu when arming
+3- Not disarming the menu when the "wasposted" bit is on
+
+This patch goes with the option 2.
+---
+ lib/Xm/CascadeBG.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/lib/Xm/CascadeBG.c b/lib/Xm/CascadeBG.c
+index 720cb732..c08c88d3 100644
+--- a/lib/Xm/CascadeBG.c
++++ b/lib/Xm/CascadeBG.c
+@@ -1394,6 +1394,10 @@ ArmAndActivate(
+ 	  else
+ 	     menuSTrait -> menuBarCleanup((Widget) parent);
+ 
++      /* if we are arming and activating doesn't make sense to have the menu bar
++       * as posted, so clean the state in case we initiated a drag in the last
++       * mouse click event */
++      CBG_SetWasPosted(cb, FALSE);
+ 	  /* do the select without calling the cascading callbacks again */
+ 	  Select (cb, event, FALSE);
+ 
+-- 
+2.14.3
+

@@ -1,7 +1,7 @@
 Summary: Run-time libraries and programs
 Name: motif
 Version: 2.3.4
-Release: 12%{?dist}
+Release: 14%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://downloads.sf.net/motif/motif-%{version}-src.tgz
@@ -38,6 +38,8 @@ Patch50: motif-2.3.4-motifzone_1564-88bdce1.patch
 Patch51: revert-of-motifzone_1565.patch
 Patch52: motifzone_1660.patch
 Patch53: motifzone_1612.patch
+Patch54: motifzone_1665.patch
+Patch55: motif-2.3.6-removed-redundant-includes.patch
 
 Conflicts: lesstif <= 0.92.32-6
 
@@ -84,6 +86,8 @@ This package contains the static Motif libraries.
 %patch51 -p1 -b .revert-of-motifzone_1565
 %patch52 -p1 -b .motifzone_1660
 %patch53 -p1 -b .motifzone_1612
+%patch54 -p1 -b .motifzone_1665
+%patch55 -p1 -b .motif_remove_redundant_includes
 
 %build
 CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64" \
@@ -138,13 +142,22 @@ rm -rf %{buildroot}
 %{_libdir}/lib*.a
 
 %changelog
-* Wed Dec 20 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-12
-- Fix label size computed wrong within form. Fixes MotifZone#1612.
-  Resolves: rhbz#1519244
+* Wed May 30 2018 Carlos Soriano <csoriano@redhat.com> - 2.3.4-14
+- Remove redundant includes that were left by mistake upstream.
+  Resolves: rhbz#1518966
 
-* Wed Dec 20 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-11
+* Wed May 30 2018 Carlos Soriano <csoriano@redhat.com> - 2.3.4-13
+- Fix motifzone 1665. Motif was deactivating shorcuts in cascade menus when
+  closing them by mouse.
+  Resolves: RHBZ#1467303
+
+* Wed Nov 15 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-12
+- Fix label size computed wrong within form. Fixes MotifZone#1612.
+  Resolves: rhbz#1510534
+
+* Mon Sep 18 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-11
 - Fix cursor color leaks. Fixes MotifZone#1660.
-  Resolves: rhbz#1508769
+  Resolves: rhbz#1420159
 
 * Sun Sep 17 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-10
 - Fix last commit that is actually MotifZone#1565 and removes that patch since
