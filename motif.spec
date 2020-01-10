@@ -138,13 +138,13 @@ rm -rf %{buildroot}
 %{_libdir}/lib*.a
 
 %changelog
-* Wed Nov 15 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-12
+* Wed Dec 20 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-12
 - Fix label size computed wrong within form. Fixes MotifZone#1612.
-  Resolves: rhbz#1510534
+  Resolves: rhbz#1519244
 
-* Mon Sep 18 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-11
+* Wed Dec 20 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-11
 - Fix cursor color leaks. Fixes MotifZone#1660.
-  Resolves: rhbz#1420159
+  Resolves: rhbz#1508769
 
 * Sun Sep 17 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-10
 - Fix last commit that is actually MotifZone#1565 and removes that patch since
