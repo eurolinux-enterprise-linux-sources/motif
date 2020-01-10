@@ -1,7 +1,7 @@
 Summary: Run-time libraries and programs
 Name: motif
 Version: 2.3.4
-Release: 10%{?dist}
+Release: 12%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://downloads.sf.net/motif/motif-%{version}-src.tgz
@@ -36,6 +36,8 @@ Patch48: openmotif-2.3.1-rhbz_997241.patch
 Patch49: motif-2.3.5-motifzone_1654.patch
 Patch50: motif-2.3.4-motifzone_1564-88bdce1.patch
 Patch51: revert-of-motifzone_1565.patch
+Patch52: motifzone_1660.patch
+Patch53: motifzone_1612.patch
 
 Conflicts: lesstif <= 0.92.32-6
 
@@ -80,6 +82,8 @@ This package contains the static Motif libraries.
 %patch49 -p1 -b .motifzone_1654
 %patch50 -p1 -b .motifzone_1564-88bdce1
 %patch51 -p1 -b .revert-of-motifzone_1565
+%patch52 -p1 -b .motifzone_1660
+%patch53 -p1 -b .motifzone_1612
 
 %build
 CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64" \
@@ -134,6 +138,14 @@ rm -rf %{buildroot}
 %{_libdir}/lib*.a
 
 %changelog
+* Wed Nov 15 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-12
+- Fix label size computed wrong within form. Fixes MotifZone#1612.
+  Resolves: rhbz#1510534
+
+* Mon Sep 18 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-11
+- Fix cursor color leaks. Fixes MotifZone#1660.
+  Resolves: rhbz#1420159
+
 * Sun Sep 17 2017 Carlos Soriano <csoriano@redhat.com> - 2.3.4-10
 - Fix last commit that is actually MotifZone#1565 and removes that patch since
   it was causing more problems. Fixes MotifZone#1576.
